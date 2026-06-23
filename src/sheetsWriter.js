@@ -25,7 +25,7 @@ async function getSheet() {
     throw new Error(`File credentials tidak ditemukan di: ${credentialsPath}`);
   }
 
-  const credentials = JSON.parse(fs.readFileSync(credentialsPath, "utf8"));
+  const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
 
   const serviceAccountAuth = new JWT({
     email: credentials.client_email,
