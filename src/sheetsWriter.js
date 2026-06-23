@@ -111,8 +111,8 @@ async function appendTransaction(transaction) {
     transaction.Keterangan,   // D: Keterangan
     transaction.Akun,         // E: Akun/Sumber Dana
     transaction.Nominal,      // F: Nominal (Rp)
-    "",                       // G: Bulan (formula otomatis)
-    "",                       // H: Tahun (formula otomatis)
+                          // G: Bulan (formula otomatis)
+                        // H: Tahun (formula otomatis)
     "",                       // I: Catatan
   ];
 
