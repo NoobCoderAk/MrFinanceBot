@@ -1,0 +1,20 @@
+{
+  "name": "telegram-finance-bot",
+  "version": "1.0.0",
+  "description": "Telegram Bot pencatat keuangan pribadi dengan Gemini AI & Google Sheets",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "keywords": ["telegram", "bot", "finance", "gemini", "google-sheets"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "google-spreadsheet": "^4.1.4",
+    "google-auth-library": "^9.14.2",
+    "node-telegram-bot-api": "^0.66.0",
+    "dotenv": "^16.4.7"
+  }
+}
