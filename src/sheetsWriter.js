@@ -7,25 +7,39 @@
  * Row 1 : Judul "💰 CASHFLOW TRACKER — TOKO SISWA"
  * Row 2 : Header -> Tanggal | Tipe | Kategori | Keterangan | Akun/Sumber Dana | Nominal (Rp) | Bulan | Tahun | Catatan
  * Row 3+ : Data transaksi
+ *
+ * CATATAN DEPLOY:
+ * Kredensial Google Service Account dibaca dari environment variable
+ * GOOGLE_CREDENTIALS_JSON (bukan dari file credentials.json).
+ * Ini aman untuk deploy ke Railway/cloud tanpa perlu upload file sensitif.
  */
 
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 const { JWT } = require("google-auth-library");
-const fs = require("fs");
-const path = require("path");
 
 let cachedSheet = null;
 
 async function getSheet() {
   if (cachedSheet) return cachedSheet;
 
-  const credentialsPath = path.resolve(process.env.GOOGLE_SERVICE_ACCOUNT_KEY_PATH);
-
-  if (!fs.existsSync(credentialsPath)) {
-    throw new Error(`File credentials tidak ditemukan di: ${credentialsPath}`);
+  // Baca credentials dari environment variable (bukan dari file)
+  const credentialsJson = process.env.GOOGLE_CREDENTIALS_JSON;
+  if (!credentialsJson) {
+    throw new Error(
+      "Environment variable GOOGLE_CREDENTIALS_JSON tidak ditemukan. " +
+      "Pastikan sudah diisi di Railway dashboard (Variables tab)."
+    );
   }
 
-  const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
+  let credentials;
+  try {
+    credentials = JSON.parse(credentialsJson);
+  } catch (e) {
+    throw new Error(
+      "GOOGLE_CREDENTIALS_JSON tidak valid — gagal di-parse sebagai JSON. " +
+      "Pastikan isi credentials.json di-paste dengan benar (tanpa baris baru tambahan)."
+    );
+  }
 
   const serviceAccountAuth = new JWT({
     email: credentials.client_email,

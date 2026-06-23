@@ -18,17 +18,20 @@ const {
 } = require("./formatter");
 
 // Validasi environment variables wajib
+// GOOGLE_CREDENTIALS_JSON menggantikan GOOGLE_SERVICE_ACCOUNT_KEY_PATH
+// karena di cloud (Railway) kita tidak upload file — credentials dibaca dari env
 const REQUIRED_ENV = [
   "TELEGRAM_BOT_TOKEN",
   "GEMINI_API_KEY",
   "SPREADSHEET_ID",
-  "GOOGLE_SERVICE_ACCOUNT_KEY_PATH",
+  "GOOGLE_CREDENTIALS_JSON",
 ];
 
 const missingEnv = REQUIRED_ENV.filter((key) => !process.env[key]);
 if (missingEnv.length > 0) {
   console.error(
-    `[ERROR] Variabel berikut belum diisi di file .env:\n  - ${missingEnv.join("\n  - ")}`
+    `[ERROR] Variabel berikut belum diisi di environment:\n  - ${missingEnv.join("\n  - ")}\n` +
+    `Jika deploy di Railway: isi semua variabel di tab Variables pada dashboard Railway.`
   );
   process.exit(1);
 }
@@ -104,7 +107,7 @@ bot.on("message", async (msg) => {
 bot.on("polling_error", (err) => {
   console.error("[Polling Error]", err.message);
   if (err.message.includes("401")) {
-    console.error("[FATAL] Token tidak valid. Periksa TELEGRAM_BOT_TOKEN di .env");
+    console.error("[FATAL] Token tidak valid. Periksa TELEGRAM_BOT_TOKEN.");
     process.exit(1);
   }
 });
